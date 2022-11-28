@@ -1,0 +1,12 @@
+New York City|http://forecast.weather.gov/MapClick.php?lat=40.7142&lon=-74.0059#.V0T2XI_zzck
+Raleigh|https://forecast.weather.gov/MapClick.php?lat=35.7855&lon=-78.6427#.Y3vC5HbMLZs
+Washington DC|https://forecast.weather.gov/MapClick.php?lat=38.8904&lon=-77.032#.Y3vDC3bMLZs
+Boston|https://forecast.weather.gov/MapClick.php?lat=42.3587&lon=-71.0567#.Y3vDI3bMLZs
+Atlanta|https://forecast.weather.gov/MapClick.php?lat=33.7483&lon=-84.3911#.Y3vDRnbMLZs
+Miami|https://forecast.weather.gov/MapClick.php?lat=25.7748&lon=-80.1977#.Y3vDXXbMLZs
+Chicago|https://forecast.weather.gov/MapClick.php?lat=41.8843&lon=-87.6324#.Y3vDb3bMLZs
+Houston|https://forecast.weather.gov/MapClick.php?lat=29.7608&lon=-95.3695#.Y3vDhHbMLZs
+Denver|https://forecast.weather.gov/MapClick.php?lat=39.74&lon=-104.992#.Y3vDlXbMLZs
+Phoenix|https://forecast.weather.gov/MapClick.php?lat=33.4483&lon=-112.0758#.Y3vDpnbMLZs
+San Francisco|https://forecast.weather.gov/MapClick.php?lat=37.7771&lon=-122.4197#.Y3vDt3bMLZs
+Los Angeles|https://forecast.weather.gov/MapClick.php?lat=34.0536&lon=-118.2454#.Y3vDxnbMLZs
