@@ -54,8 +54,8 @@ def getWeather():
     filename1 = "csc116/city.txt"
     filename2 = "csc116/temperature.txt"
     city = open(filename1, "r")
-    name = city.readline()
     url = city.readline()
+    name = city.readline()
     city.close()
     req = urllib.request.Request(url)
     web = urllib.request.urlopen(req)
@@ -72,13 +72,18 @@ def getWeather():
             temperature = open(filename2, "r")
             isFarenheight = temperature.read()
             if isFarenheight == "True":
-                return name + temp + " F"
+                return name + "\n" + temp + " F"
             else:
                 myTemp = int(temp)
-                return name + fToC(myTemp) + " C" 
+                return name + "\n" + fToC(myTemp) + " C" 
 
+# Place weather method
 def placeWeather():
+    city = open("csc116/city.txt", "r")
+    url = city.readline()
+    city.close()
     temperature = tk.Label(text=getWeather())
+    temperature.bind("<Button>", lambda e: callback(url))
     temperature.place(x=900, y=850)
 
 # Update Time method

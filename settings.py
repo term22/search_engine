@@ -15,7 +15,7 @@ root.title("Settings")
 root.geometry("500x700")
 
 # Important variables
-location = StringVar(root)
+location = StringVar()
 location.set("Select a Location")
 
 # Change password
@@ -28,6 +28,37 @@ def changePassword():
         return
     file.write(pw)
     file.close()
+
+# Change Location
+def changeLocation():
+    myLocation = location.get()
+    file = open("csc116/city.txt", "w")
+    if myLocation == "New York City":
+        file.write("http://forecast.weather.gov/MapClick.php?lat=40.7142&lon=-74.0059#.V0T2XI_zzck\n")
+    elif myLocation == "Raleigh":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=35.7855&lon=-78.6427#.Y3vC5HbMLZs\n")
+    elif myLocation == "Washington DC":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=38.8904&lon=-77.032#.Y3vDC3bMLZs\n")
+    elif myLocation == "Boston":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=42.3587&lon=-71.0567#.Y3vDI3bMLZs\n")
+    elif myLocation == "Atlanta":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=33.7483&lon=-84.3911#.Y3vDRnbMLZs\n")
+    elif myLocation == "Miami":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=25.7748&lon=-80.1977#.Y3vDXXbMLZs\n")
+    elif myLocation == "Chicago":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=41.8843&lon=-87.6324#.Y3vDb3bMLZs\n")
+    elif myLocation == "Houston":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=29.7608&lon=-95.3695#.Y3vDhHbMLZs\n")
+    elif myLocation == "Denver":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=39.74&lon=-104.992#.Y3vDlXbMLZs\n")
+    elif myLocation == "Phoenix":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=33.4483&lon=-112.0758#.Y3vDpnbMLZs\n")
+    elif myLocation == "San Francisco":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=37.7771&lon=-122.4197#.Y3vDt3bMLZs\n")
+    elif myLocation == "Los Angeles":
+        file.write("https://forecast.weather.gov/MapClick.php?lat=34.0536&lon=-118.2454#.Y3vDxnbMLZs\n")
+    file.write(myLocation)
+    file.close()   
 
 # Obtains the current background color
 def getBackgroundColor():
@@ -114,7 +145,10 @@ Button(root, text="Change Background Color", width = 20, command=changeBackgroun
 Button(root, text="Change Password", width = 20, command=changePassword).place(x=100, y=100)
 locations = StringVar()
 locations.set("Change Location")
-OptionMenu(root, location, "New York City", "Raleigh", "Washington DC", "Boston", "Atlanta", "Miami", "Chicago", "Houston", "Denver", "Phoenix", "San Francisco", "Los Angeles").place(x=100, y=200)
+menu = OptionMenu(root, location, "New York City", "Raleigh", "Washington DC", "Boston", "Atlanta", "Miami", "Chicago", "Houston", "Denver", "Phoenix",
+"San Francisco", "Los Angeles")
+menu.place(x=100, y=200)
+Button(root, text="Change Location", command=changeLocation).place(x=300, y=200)
 Button(root, text="Exit", width = 20, command=exitSettings).place(x=100, y=600)
 Button(root, text="Change Temperature Setting", width = 30, command=changeTemperature).place(x=100, y=300)
 Button(root, text="Change clock display", width=30, command=changeClock).place(x=100, y=500)
