@@ -20,12 +20,23 @@ def getDateAndTime():
     today = date.today()
     day = today.strftime("%m/%d/%y")
     now = datetime.now()
-    hour = now.strftime("%I")
-    if (int(hour) < 10):
-        hour = hour[1:]
-    minute = now.strftime("%M")
-    time = hour + ":" + minute
-    return day + "\n" + time + " " + now.strftime("%p")
+    hourFile = open("csc116/clock.txt", "r")
+    statement = hourFile.read()
+    hourFile.close()
+    if statement == "AM-PM":
+        hour = now.strftime("%I")
+        if (int(hour) < 10):
+            hour = hour[1:]
+        minute = now.strftime("%M")
+        time = hour + ":" + minute
+        return day + "\n" + time + " " + now.strftime("%p")
+    else:
+        hour = now.strftime("%H")
+        if (int(hour) < 10):
+            hour = hour[1:]
+        minute = now.strftime("%M")
+        time = hour + ":" + minute
+        return day + "\n" + time
 
 # Obtains the current background color
 def getBackgroundColor():

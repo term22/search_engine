@@ -12,7 +12,7 @@ import subprocess
 # Setup window
 root = tk.Tk()
 root.title("Settings")
-root.geometry("500x600")
+root.geometry("500x700")
 
 # Important variables
 location = StringVar(root)
@@ -77,6 +77,18 @@ def changeBackgroundColor():
     else:
         messagebox.showerror("Invalid color", "Error: You entered in an invalid color")
    
+# Change Clock
+def changeClock():
+    file = open("csc116/clock.txt", "r+")
+    time = file.read()
+    file.seek(0)
+    file.truncate()
+    if time == "AM-PM":
+        file.write("24-Hrs")
+    else:
+        file.write("AM-PM")
+    file.close()
+
 # Change Temperature
 def changeTemperature():
     file = open("csc116/temperature.txt", "r+")
@@ -103,6 +115,7 @@ Button(root, text="Change Password", width = 20, command=changePassword).place(x
 locations = StringVar()
 locations.set("Change Location")
 OptionMenu(root, location, "New York City", "Raleigh", "Washington DC", "Boston", "Atlanta", "Miami", "Chicago", "Houston", "Denver", "Phoenix", "San Francisco", "Los Angeles").place(x=100, y=200)
-Button(root, text="Exit", width = 20, command=exitSettings).place(x=100, y=500)
+Button(root, text="Exit", width = 20, command=exitSettings).place(x=100, y=600)
 Button(root, text="Change Temperature Setting", width = 30, command=changeTemperature).place(x=100, y=300)
+Button(root, text="Change clock display", width=30, command=changeClock).place(x=100, y=500)
 root.mainloop()
