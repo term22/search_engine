@@ -9,6 +9,7 @@ from tkinter.messagebox import askyesno
 import tkinter as tk
 import subprocess
 import os
+import re
 
 # Important Variables
 current_font = "Times New Roman (Times)"
@@ -23,6 +24,15 @@ def changeFontSize():
     mySize = size.get()
     current_font_size = mySize
     configureFont(current_font, current_font_size)
+
+# Get word count
+def getWordCount():
+    return len(re.findall(r'\w+', text.get('1.0', 'end')))
+
+# Display word and char count
+def displayWordCount():
+    display = "Word count: " + str(getWordCount())
+    messagebox.showinfo("Word Count", display)
 
 # Change the font
 def changeFont():
@@ -58,7 +68,9 @@ def getBackgroundColor():
 # Function that saves a file
 def saveFile():
     myFilename = filename.get()
-    file = open("csc116/files/" + myFilename + ".txt", "w")
+    if myFilename == "":
+        myFilename = "doc-1"
+    file = open("csc116/search_engine/files/" + myFilename + ".txt", "w")
     myText = text.get('1.0','end')
     for i in range(0, len(myText), 1):
         file.write(myText[i]) 
@@ -70,10 +82,10 @@ def saveFile():
 # Function to load a currently existing file
 def loadFile():
     myFilename = filename.get()
-    if os.path.exists("csc116/files/" + myFilename + ".txt") == False:
+    if os.path.exists("csc116/search_engine/files/" + myFilename + ".txt") == False:
         messagebox.showerror("Error", "File with the given filename does not exist")
     else:
-        file = open("csc116/files/" + myFilename + ".txt", "r")
+        file = open("csc116/search_engine/files/" + myFilename + ".txt", "r")
         content = file.read()
         text.insert(tk.END, content)
         file.close()
@@ -102,6 +114,9 @@ Button(window, text="Load File", command=loadFile).place(x=300, y=50)
 
 # Button to exit text editor
 Button(window, text="Exit Text Editor", command=exitTextEditor).place(x=400, y=50)
+
+# Button to get word and char counts
+Button(window, text="Word Count", command=displayWordCount).place(x=825, y=50)
 
 # Filename
 filename = Entry(window)
