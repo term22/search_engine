@@ -18,7 +18,19 @@ urls = []
 # Get date and time method
 def getDateAndTime():
     today = date.today()
-    day = today.strftime("%m/%d/%y")
+    myDate = ""
+    dateFile = open("csc116/date.txt", "r")
+    fmat = dateFile.read()
+    dateFile.close()
+    month = today.strftime("%m")
+    day = today.strftime("%d")
+    year = today.strftime("%y")
+    if int(day) >= 1 and int(day) < 10:
+        day = day[1:]
+    if fmat == "M/D/Y":
+        myDate = today.strftime(month + "/" + day + "/" + year)
+    else:
+        myDate = today.strftime(day + "/" + month + "/" + year)
     now = datetime.now()
     hourFile = open("csc116/clock.txt", "r")
     statement = hourFile.read()
@@ -29,7 +41,7 @@ def getDateAndTime():
             hour = hour[1:]
         minute = now.strftime("%M")
         time = hour + ":" + minute
-        return day + "\n" + time + " " + now.strftime("%p")
+        return myDate + "\n" + time + " " + now.strftime("%p")
     else:
         hour = now.strftime("%H")
         if (int(hour) < 10):
@@ -37,13 +49,6 @@ def getDateAndTime():
         minute = now.strftime("%M")
         time = hour + ":" + minute
         return day + "\n" + time
-
-# Obtains the current background color
-def getBackgroundColor():
-    file = open("csc116/color.txt", "r")
-    color = file.read()
-    file.close()
-    return color
 
 # Converts from farenheight to celsius
 def fToC(temp):
@@ -101,42 +106,59 @@ def getKeyword():
     updateDateAndTime()
     keyword = e.get()
     e.delete(0, END)
+    if keyword != "":
 
-    # Set up important variables
-    filename = "news.txt"
-    file = open(filename, "r")
-    numLines = len(file.readlines())
+        # Set up important variables
+        filename = "news.txt"
+        file = open(filename, "r")
+        numLines = len(file.readlines())
+        file.close()
+
+        # Loop through the text file
+        file = open(filename, "r")
+        for i in range(0, numLines, 1):
+            line = file.readline().split("@")
+            if (keyword.upper() in line[0].upper() or keyword.upper() in line[1].upper()):
+                results.update({line[0]: line[1]})
+
+        # Display results
+        if (len(results) > 0):
+            y_coord = 100
+            for a in results:
+                result = tk.Label(text=(a + "\n"))
+                titles.append(result)
+                result.place(x=200, y=y_coord)
+                y_coord += 20
+                link = tk.Label(text=results[a], fg="blue")
+                urls.append(link)
+                link.bind("<Button>", lambda e: callback(results[a]))
+                link.place(x=200, y=y_coord)
+                y_coord += 40                     
+        else:
+            result = tk.Label(text="Sorry, could not find any results based on your keyword(s)")
+            result.place(x=200, y=100)
+        
+        file.close()
+
+# Obtains the current background color
+def getBackgroundColor():
+    file = open("csc116/color.txt", "r")
+    color = file.read()
     file.close()
+    return color
 
-    # Loop through the text file
-    file = open(filename, "r")
-    for i in range(0, numLines, 1):
-        line = file.readline().split("@")
-        if (keyword.upper() in line[0].upper() or keyword.upper() in line[1].upper()):
-            results.update({line[0]: line[1]})
-
-    # Display results
-    if (len(results) > 0):
-        y_coord = 100
-        for a in results:
-            result = tk.Label(text=(a + "\n"))
-            titles.append(result)
-            result.place(x=200, y=y_coord)
-            y_coord += 20
-            link = tk.Label(text=results[a], fg="blue")
-            urls.append(link)
-            link.bind("<Button>", lambda e: callback(results[a]))
-            link.place(x=200, y=y_coord)
-            y_coord += 40                     
-    else:
-        result = tk.Label(text="Sorry, could not find any results based on your keyword(s)")
-        result.place(x=200, y=100)
-    
-    file.close()
-
-def gotoSettings():
-    window.destroy()
-    subprocess.call(['python', 'csc116/settings.py'])
+# Obtain and goto selected app
+def gotoSelectedApp():
+    selectedApp = currentApp.get()
+    if selectedApp == "Docs":
+        window.destroy()
+        subprocess.call(['python', 'csc116/search_engine/editor.py'])
+    elif selectedApp == "Settings":
+        window.destroy()
+        subprocess.call(['python', 'csc116/search_engine/settings.py'])
+    elif selectedApp == "Drive":
+        window.destroy()
+        subprocess.call(['python', 'csc116/search_engine/drive.py'])
 
 # Clear Results
 def clearResults(results, titles, urls):
@@ -160,11 +182,17 @@ window.configure(bg=getBackgroundColor())
 updateDateAndTime()
 placeWeather()
 
+# Set up Apps
+currentApp = StringVar(window)
+currentApp.set("Apps")
+apps = OptionMenu(window, currentApp, "Docs", "Drive", "Settings")
+apps.place(x=700, y=10)
+
 # User input
 e = Entry(window)
 e.place(x=500, y=10)
 Button(window, text="Search", command=getKeyword).place(x=600, y=10)
-Button(window, text="Settings", command=gotoSettings).place(x=700, y=10)
+Button(window, text="Goto App", command=gotoSelectedApp).place(x=800, y=10)
 
 # Letting the program run
 window.mainloop()
