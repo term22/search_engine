@@ -159,8 +159,11 @@ def gotoSelectedApp():
     elif selectedApp == "Drive":
         window.destroy()
         subprocess.call(['python', 'csc116/search_engine/drive.py'])
+    elif selectedApp == "Environmental Science Game":
+        window.destroy()
+        subprocess.Popen("csc116/search_engine/educational_game.exe")
 
-# Clear Results
+# Clear Resultsq
 def clearResults(results, titles, urls):
     results.clear()
     for label in titles:
@@ -185,14 +188,14 @@ placeWeather()
 # Set up Apps
 currentApp = StringVar(window)
 currentApp.set("Apps")
-apps = OptionMenu(window, currentApp, "Docs", "Drive", "Settings")
+apps = OptionMenu(window, currentApp, "Docs", "Drive", "Settings", "Environmental Science Game")
 apps.place(x=700, y=10)
 
 # User input
 e = Entry(window)
 e.place(x=500, y=10)
 Button(window, text="Search", command=getKeyword).place(x=600, y=10)
-Button(window, text="Goto App", command=gotoSelectedApp).place(x=800, y=10)
+Button(window, text="Goto App", command=gotoSelectedApp).place(x=700, y=50)
 
 # Letting the program run
 window.mainloop()
