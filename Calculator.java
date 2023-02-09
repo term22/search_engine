@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,14 +85,14 @@ public class Calculator extends JFrame {
     /** The Clear JButton */
 	private Button clear = new Button("Clear");
 
+    /** The Delete button */
+    private Button delete = new Button("Delete");
+
     /** Exit calculator button */
     private Button exit = new Button("Exit");
 
     /** Our expression */
     private Label ourExp;
-
-    /** Our answer */
-    private Label ourAns;
 
     public Calculator() {
         initializeCalculator();
@@ -117,9 +120,9 @@ public class Calculator extends JFrame {
     }
 
     public void addToExpression(char ch) {
-        if (ch == '(' || ch == ')' || ch == '^') {
+        if (ch == '(') {
             expression += ch;
-        } else if (ch == '.') {
+        } else if (ch == '.' || ch == '^' || ch == ')') {
             expression = expression.substring(0, expression.length() - 1) + ch;
         } else {
             expression += ch + " ";
@@ -133,11 +136,26 @@ public class Calculator extends JFrame {
         frame.add(ourExp);
     }
 
+    public void solveForAnswer() {
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        try {
+            answer = Double.parseDouble(String.valueOf(engine.eval(expression)));
+        } catch (ScriptException e) {
+            JOptionPane.showMessageDialog(frame, "Invalid syntax.");
+        }   
+    }
+
     public void displayAnswer() {
-        frame.remove(ourAns);
-        ourAns = new Label(String.valueOf(answer));
-        ourAns.setBounds(450, 100, 10, 10);
-        frame.add(ourAns);
+        JOptionPane.showMessageDialog(frame, String.valueOf(answer));
+    }
+
+    public void delete() {
+        if (expression.charAt(expression.length() - 1) == ' ') {
+            expression = expression.substring(0, expression.length() - 2);
+        } else {
+            expression = expression.substring(0, expression.length() - 1);
+        }       
     }
 
     public void initializeCalculator() {
@@ -147,8 +165,6 @@ public class Calculator extends JFrame {
         ourExp = new Label(expression);
         ourExp.setBounds(100, 100, 400, 50);
         answer = 0;
-        ourAns = new Label();
-        ourAns.setBounds(450, 100, 10, 10);
 
         // Setup the panel
         try {
@@ -178,8 +194,9 @@ public class Calculator extends JFrame {
         mul.setBounds(425, 250, 50, 50);
         div.setBounds(50, 325, 50, 50);
         exp.setBounds(50, 250, 50, 50);
-        clear.setBounds(100, 175, 100, 50);
-        enter.setBounds(300, 175, 100, 50);
+        clear.setBounds(50, 175, 100, 50);
+        delete.setBounds(200, 175, 100, 50);
+        enter.setBounds(350, 175, 100, 50);
         exit.setBounds(400, 50, 50, 20);
 
         // Add the action listeners
@@ -299,15 +316,22 @@ public class Calculator extends JFrame {
         clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
               expression = "";
+              answer = 0;
               displayExpression();
             }
         });
         enter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+              solveForAnswer();
               displayAnswer();
             }
         });
-
+        delete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                delete();
+                displayExpression();
+            }
+        });
 
         // add our buttons to the frame
         frame.add(clear);
@@ -331,6 +355,7 @@ public class Calculator extends JFrame {
         frame.add(div);
         frame.add(exp);
         frame.add(exit);
+        frame.add(delete);
 
         // Add our panel
         frame.setSize(500, 500);
