@@ -162,6 +162,9 @@ def gotoSelectedApp():
     elif selectedApp == "Environmental Science Game":
         window.destroy()
         subprocess.Popen("csc116/search_engine/educational_game.exe")
+    elif selectedApp == "Calculator":
+        window.destroy()
+        subprocess.call(['java', 'csc116/search_engine/Calculator.java'])
 
 # Clear Resultsq
 def clearResults(results, titles, urls):
@@ -188,7 +191,7 @@ placeWeather()
 # Set up Apps
 currentApp = StringVar(window)
 currentApp.set("Apps")
-apps = OptionMenu(window, currentApp, "Docs", "Drive", "Settings", "Environmental Science Game")
+apps = OptionMenu(window, currentApp, "Docs", "Drive", "Settings", "Environmental Science Game", "Calculator")
 apps.place(x=700, y=10)
 
 # User input
