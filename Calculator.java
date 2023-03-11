@@ -25,6 +25,9 @@ public class Calculator extends JFrame {
     /** Our answer */
     private double answer;
 
+    /** Old answer */
+    private double oldAnswer;
+
     /** The Add JButton */
 	private Button enter = new Button("Enter");
 
@@ -79,8 +82,8 @@ public class Calculator extends JFrame {
     /** Division */
     private Button div = new Button("/");
 
-    /** Exponentiation */
-    private Button exp = new Button("^");
+    /** Percent */
+    private Button percent = new Button("%");
 
     /** The Clear JButton */
 	private Button clear = new Button("Clear");
@@ -91,6 +94,9 @@ public class Calculator extends JFrame {
     /** Exit calculator button */
     private Button exit = new Button("Exit");
 
+    /** Answer button */
+    private Button ans = new Button("Ans");
+
     /** Our expression */
     private Label ourExp;
 
@@ -99,7 +105,7 @@ public class Calculator extends JFrame {
     }
 
     public Color getBackgroundColor() throws FileNotFoundException {
-        Scanner scnr = new Scanner(new File("csc116/search_engine/color.txt"));
+        Scanner scnr = new Scanner(new File("csc116/color.txt"));
         String color = scnr.next();
         scnr.close();
         if (color.equals("red")) {
@@ -119,14 +125,8 @@ public class Calculator extends JFrame {
         }
     }
 
-    public void addToExpression(char ch) {
-        if (ch == '(') {
-            expression += ch;
-        } else if (ch == '.' || ch == '^' || ch == ')') {
-            expression = expression.substring(0, expression.length() - 1) + ch;
-        } else {
-            expression += ch + " ";
-        }
+    public void addToExpression(String ch) {
+        expression += ch;  
     }
 
     public void displayExpression() {
@@ -140,22 +140,33 @@ public class Calculator extends JFrame {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         try {
-            answer = Double.parseDouble(String.valueOf(engine.eval(expression)));
+            answer = Double.parseDouble(String.valueOf(engine.eval(expression))); 
         } catch (ScriptException e) {
             JOptionPane.showMessageDialog(frame, "Invalid syntax.");
-        }   
+        }
+        oldAnswer = answer;  
     }
 
     public void displayAnswer() {
-        JOptionPane.showMessageDialog(frame, String.valueOf(answer));
+        if (answer == Double.POSITIVE_INFINITY) {
+            JOptionPane.showMessageDialog(frame, "Divide by zero error.");
+        } else {
+            JOptionPane.showMessageDialog(frame, String.valueOf(answer));
+        }       
+    }
+
+    public void displayPercent() {
+        if (answer == Double.POSITIVE_INFINITY) {
+            JOptionPane.showMessageDialog(frame, "Divide by zero error.");
+        } else {
+            JOptionPane.showMessageDialog(frame, String.valueOf(answer * 0.01));
+        }     
     }
 
     public void delete() {
-        if (expression.charAt(expression.length() - 1) == ' ') {
-            expression = expression.substring(0, expression.length() - 2);
-        } else {
+        if (expression.length() > 0) {
             expression = expression.substring(0, expression.length() - 1);
-        }       
+        }     
     }
 
     public void initializeCalculator() {
@@ -165,6 +176,7 @@ public class Calculator extends JFrame {
         ourExp = new Label(expression);
         ourExp.setBounds(100, 100, 400, 50);
         answer = 0;
+        oldAnswer = 0;
 
         // Setup the panel
         try {
@@ -193,11 +205,12 @@ public class Calculator extends JFrame {
         sub.setBounds(350, 250, 50, 50);
         mul.setBounds(425, 250, 50, 50);
         div.setBounds(50, 325, 50, 50);
-        exp.setBounds(50, 250, 50, 50);
+        percent.setBounds(50, 250, 50, 50);
         clear.setBounds(50, 175, 100, 50);
         delete.setBounds(200, 175, 100, 50);
         enter.setBounds(350, 175, 100, 50);
         exit.setBounds(400, 50, 50, 20);
+        ans.setBounds(500, 250, 50, 50);
 
         // Add the action listeners
         exit.addActionListener(new ActionListener() {
@@ -207,109 +220,109 @@ public class Calculator extends JFrame {
         });
         zero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('0');
+              addToExpression("0");
               displayExpression();
             }
         });
         one.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('1');
+              addToExpression("1");
               displayExpression();
             }
         });
         two.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('2');
+              addToExpression("2");
               displayExpression();
             }
         });
         three.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('3');
+              addToExpression("3");
               displayExpression();
             }
         });
         four.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('4');
+              addToExpression("4");
               displayExpression();
             }
         });
         five.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('5');
+              addToExpression("5");
               displayExpression();
             }
         });
         six.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('6');
+              addToExpression("6");
               displayExpression();
             }
         });
         seven.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('7');
+              addToExpression("7");
               displayExpression();
             }
         });
         eight.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('8');
+              addToExpression("8");
               displayExpression();
             }
         });
         nine.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('9');
+              addToExpression("9");
               displayExpression();
             }
         });
         left_paren.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('(');
+              addToExpression("(");
               displayExpression();
             }
         });
         right_paren.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression(')');
+              addToExpression(")");
               displayExpression();
             }
         });
         add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('+');
+              addToExpression("+");
               displayExpression();
             }
         });
         sub.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('-');
+              addToExpression("-");
               displayExpression();
             }
         });
         mul.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('*');
+              addToExpression("*");
               displayExpression();
             }
         });
         div.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('/');
+              addToExpression("/");
               displayExpression();
+            }
+        });
+        percent.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                solveForAnswer();
+                displayPercent();
             }
         });
         decimal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-              addToExpression('.');
-              displayExpression();
-            }
-        });
-        exp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-              addToExpression('^');
+              addToExpression(".");
               displayExpression();
             }
         });
@@ -329,6 +342,12 @@ public class Calculator extends JFrame {
         delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 delete();
+                displayExpression();
+            }
+        });
+        ans.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                addToExpression(String.valueOf(oldAnswer));
                 displayExpression();
             }
         });
@@ -353,13 +372,13 @@ public class Calculator extends JFrame {
         frame.add(sub);
         frame.add(mul);
         frame.add(div);
-        frame.add(exp);
+        frame.add(percent);
         frame.add(exit);
         frame.add(delete);
+        frame.add(ans);
 
         // Add our panel
-        frame.setSize(500, 500);
-        frame.show();
+        frame.setSize(600, 600);
     }
 
     public static void main(String[] args) {
