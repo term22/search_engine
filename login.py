@@ -52,5 +52,5 @@ else:
 
 # Main Loop
 root.destroy()
-subprocess.call(['python', 'csc116/search-engine.py'])
+subprocess.call(['python', 'csc116/search_engine/search-engine.py'])
 root.mainloop()

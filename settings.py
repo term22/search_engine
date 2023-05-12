@@ -58,7 +58,7 @@ def changeLocation():
     elif myLocation == "Los Angeles":
         file.write("https://forecast.weather.gov/MapClick.php?lat=34.0536&lon=-118.2454#.Y3vDxnbMLZs\n")
     file.write(myLocation)
-    file.close()   
+    file.close()
 
 # Obtains the current background color
 def getBackgroundColor():
@@ -135,7 +135,7 @@ def changeTemperature():
 # Exit settings window
 def exitSettings():
     root.destroy()
-    subprocess.call(['python', 'csc116/search-engine.py'])
+    subprocess.call(['python', 'csc116/search_engine/search-engine.py'])
     
 # Main processing
 root.configure(bg=getBackgroundColor())

@@ -58,19 +58,12 @@ def changeFont():
         current_font = "Verdana"
     configureFont(current_font, current_font_size)
 
-# Obtains the current background color
-def getBackgroundColor():
-    file = open("csc116/color.txt", "r")
-    color = file.read()
-    file.close()
-    return color
-
 # Function that saves a file
 def saveFile():
     myFilename = filename.get()
     if myFilename == "":
         myFilename = "doc-1"
-    file = open("csc116/search_engine/files/" + myFilename + ".txt", "w")
+    file = open("csc116/search_engine/files/docs/" + myFilename + ".txt", "w")
     myText = text.get('1.0','end')
     for i in range(0, len(myText), 1):
         file.write(myText[i]) 
@@ -82,20 +75,27 @@ def saveFile():
 # Function to load a currently existing file
 def loadFile():
     myFilename = filename.get()
-    if os.path.exists("csc116/search_engine/files/" + myFilename + ".txt") == False:
+    if os.path.exists("csc116/search_engine/files/docs/" + myFilename + ".txt") == False:
         messagebox.showerror("Error", "File with the given filename does not exist")
     else:
-        file = open("csc116/search_engine/files/" + myFilename + ".txt", "r")
+        file = open("csc116/search_engine/files/docs/" + myFilename + ".txt", "r")
         content = file.read()
         text.insert(tk.END, content)
         file.close()
+
+# Obtains the current background color
+def getBackgroundColor():
+    file = open("csc116/color.txt", "r")
+    color = file.read()
+    file.close()
+    return color
 
 # Function to exit text editor
 def exitTextEditor():
     exit = askyesno("Exit", message="Would you like to exit the text editor? (Anything not saved will be lost)")
     if exit:
         window.destroy()
-        subprocess.call(['python', 'csc116/search-engine.py'])    
+        subprocess.call(['python', 'csc116/search_engine/search-engine.py'])    
 
 # Setup GUI Frame
 window = tk.Tk()
