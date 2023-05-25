@@ -23,14 +23,16 @@ def getDateAndTime():
     fmat = dateFile.read()
     dateFile.close()
     month = today.strftime("%m")
+    if int(month) < 10:
+        month = month[1:]
     day = today.strftime("%d")
     year = today.strftime("%y")
     if int(day) >= 1 and int(day) < 10:
         day = day[1:]
     if fmat == "M/D/Y":
-        myDate = today.strftime(month + "/" + day + "/" + year)
+        myDate = month + "/" + day + "/" + year
     else:
-        myDate = today.strftime(day + "/" + month + "/" + year)
+        myDate = day + "/" + month + "/" + year
     now = datetime.now()
     hourFile = open("csc116/clock.txt", "r")
     statement = hourFile.read()

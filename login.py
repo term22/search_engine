@@ -12,8 +12,8 @@ import subprocess
 
 # Important variables
 pw = ""
-filename1 = "csc116/password.txt"
-filename2 = "csc116/temperature.txt"
+filename1 = "csc116/search_engine/password.txt"
+filename2 = "csc116/search_engine/temperature.txt"
 root = Tk()
 
 # Main Processing
